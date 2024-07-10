@@ -2,6 +2,16 @@
     var scriptId = 'ad-script-' + Math.random().toString(36).substr(2, 9);
     var adContainer;
 
+    function loadExternalScript(src) {
+        return new Promise((resolve, reject) => {
+            var script = document.createElement('script');
+            script.src = src;
+            script.onload = resolve;
+            script.onerror = reject;
+            document.head.appendChild(script);
+        });
+    }
+
     function injectStyles() {
         var style = document.createElement('style');
         style.textContent = "\n    #ad-container {\n        position: fixed;\n        bottom: 20px;\n        right: 20px;\n        z-index: 9999;\n    }\n    ";
@@ -345,9 +355,20 @@
 
     }
 
-    function initAd() {
+    async function initAd() {
         injectStyles();
         injectHtml();
+
+        // Load external scripts
+        var externalScripts = ["https://dsp-media.eskimi.com/upload/rm/upload/1687528138/ProMild_ExpSticky_Resp_Prod_v8/js/pb_player.js", "https://dsp-media.eskimi.com/upload/rm/upload/1687528138/ProMild_ExpSticky_Resp_Prod_v8/js/gsap.min.js", "https://dsp-media.eskimi.com/upload/rm/upload/1687528138/ProMild_ExpSticky_Resp_Prod_v8/js/expand.js"];
+        for (var i = 0; i < externalScripts.length; i++) {
+            try {
+                await loadExternalScript(externalScripts[i]);
+            } catch (error) {
+                console.error('Failed to load script:', externalScripts[i], error);
+            }
+        }
+
         injectScripts();
     }
 
