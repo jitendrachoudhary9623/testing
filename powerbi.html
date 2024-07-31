@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raise a Query</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .form-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .form-group button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Raise a Query</h2>
+    <form id="queryForm" onsubmit="return showAlert(event)">
+        <div class="form-group">
+            <label for="queryTitle">Query Title</label>
+            <input type="text" id="queryTitle" name="queryTitle" required>
+        </div>
+        <div class="form-group">
+            <label for="queryDescription">Query Description</label>
+            <textarea id="queryDescription" name="queryDescription" rows="4" required></textarea>
+        </div>
+        <div class="form-group">
+            <label for="queryPriority">Priority</label>
+            <select id="queryPriority" name="queryPriority" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+        </div>
+        <input type="hidden" id="queryData" name="queryData">
+        <div class="form-group">
+            <button type="submit">Submit Query</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Function to fill the form with data passed in the query string
+    function fillFormFromQuery() {
+        const urlParams = new URLSearchParams(window.location.search);
+        document.getElementById('queryTitle').value = urlParams.get('queryTitle') || '';
+        document.getElementById('queryDescription').value = urlParams.get('queryDescription') || '';
+        document.getElementById('queryPriority').value = urlParams.get('queryPriority') || 'Medium';
+        document.getElementById('queryData').value = urlParams.get('queryData') || '';
+    }
+
+    // Function to show an alert on form submission
+    function showAlert(event) {
+        event.preventDefault(); // Prevent the default form submission
+        alert('Your query has been submitted successfully!');
+        return false; // Prevent the default form submission behavior
+    }
+
+    document.addEventListener('DOMContentLoaded', fillFormFromQuery);
+</script>
+
+</body>
+</html>
